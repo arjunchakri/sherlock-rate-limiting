@@ -20,8 +20,6 @@ public class RateLimitControllers {
 	@Autowired
 	RateLimiterRepository rateLimitValidator;
 
-	private StringBuilder requests = new StringBuilder();
-
 	@RequestMapping(value = "/testapi", method = RequestMethod.GET)
 	public String testapi(@RequestParam(value = "tenant") String tenant, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -35,15 +33,7 @@ public class RateLimitControllers {
 					+ DateUtils.parseDate(validationResponse.getLastRequest());
 		}
 
-		String previousRequests = requests.toString();
-
-		String currentDateAsString = DateUtils.getCurrentDateAsString();
-		requests.append(" || ");
-		requests.append(tenant);
-		requests.append(" : ");
-		requests.append(currentDateAsString);
-
-		return "OK. Current request at " + currentDateAsString + ", Previous requests were " + previousRequests;
+		return "OK.";
 
 	}
 

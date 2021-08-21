@@ -40,23 +40,23 @@ public class RateLimiterRepository {
 	}
 
 	public RateTrackerBean validate(String tenantId) {
-		RateTrackerBean requests = null;
+		RateTrackerBean tenantRequest = null;
 		try {
-			requests = rateTracker.get(tenantId);
+			tenantRequest = rateTracker.get(tenantId);
 		}
 		catch (ExecutionException e) {
-			requests = new RateTrackerBean();
+			tenantRequest = new RateTrackerBean();
 		}
-		if (requests.isLimitExceeded()) {
-			return requests;
+		if (tenantRequest.isLimitExceeded()) {
+			return tenantRequest;
 		}
-		
-		requests.incrementRequestCount();
-		if (requests.getRequestCount() > rateLimiterRequestsCount) {
-			requests.setLimitExceeded(true);
+
+		tenantRequest.incrementRequestCount();
+		if (tenantRequest.getRequestCount() > rateLimiterRequestsCount) {
+			tenantRequest.setLimitExceeded(true);
 		}
-		rateTracker.put(tenantId, requests);
-		return requests;
+		rateTracker.put(tenantId, tenantRequest);
+		return tenantRequest;
 	}
 
 	public String getCurrentState() {
