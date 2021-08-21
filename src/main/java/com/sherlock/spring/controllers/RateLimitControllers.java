@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class RateLimitControllers {
 
 	private StringBuilder requests = new StringBuilder();
 
-	@RequestMapping(value = "/testapi")
+	@RequestMapping(value = "/testapi", method = RequestMethod.GET)
 	public String testapi(@RequestParam(value = "tenant") String tenant, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -38,13 +39,15 @@ public class RateLimitControllers {
 
 		String currentDateAsString = DateUtils.getCurrentDateAsString();
 		requests.append(" || ");
+		requests.append(tenant);
+		requests.append(" : ");
 		requests.append(currentDateAsString);
 
 		return "OK. Current request at " + currentDateAsString + ", Previous requests were " + previousRequests;
 
 	}
 
-	@RequestMapping(value = "/state")
+	@RequestMapping(value = "/state", method = RequestMethod.GET)
 	public String state() throws Exception {
 		return rateLimitValidator.getCurrentState();
 	}
