@@ -52,9 +52,4 @@ public class RateLimitControllers {
 		return rateLimitValidator.getCurrentState();
 	}
 
-	@RequestMapping(value = "/status")
-	public String status() throws Exception {
-		return "OK";
-	}
-
 }
